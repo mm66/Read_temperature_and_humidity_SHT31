@@ -101,20 +101,4 @@ void app_main() {
 	ESP_LOGD(TAG, "sht31 initialize");
 	sht31_init();
 
-
-
-	// while (1) {
-	// 	// TODO something
-	// 	if (sht31_readTempHum()) {
-	// 		float h = sht31_readHumidity();
-	// 		float t = sht31_readTemperature();
-	// 		ESP_LOGI(tag, "H, T : %.2f, %.2f", h, t);
-	// 	} else {
-	// 		ESP_LOGI(tag, "sht31_readTempHum : failed");
-	// 	}
-
-	// 	vTaskDelay(10000 / portTICK_PERIOD_MS);
-	// }
-
-	// vTaskDelete(NULL);
 } 
