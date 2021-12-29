@@ -62,7 +62,7 @@ static esp_err_t set_content_type_from_file(httpd_req_t *req, const char *filepa
 }
 
 /*Send HTTP response with the contents of the requested file */
-static esp_err_t rest_common_get_handler(httpd_req_t *req)
+static esp_err_t rest_GET_resource_handler(httpd_req_t *req)
 {
     char filepath[FILE_PATH_MAX];
 
@@ -123,7 +123,7 @@ static esp_err_t rest_common_get_handler(httpd_req_t *req)
 }
 
 /* Handler for getting temperature data*/
-static esp_err_t temperature_data_get_handler(httpd_req_t *req)
+static esp_err_t temperature_data_GET_handler(httpd_req_t *req)
 {
     httpd_resp_set_type(req, "application/json");
     cJSON *root = cJSON_CreateObject();
@@ -143,7 +143,7 @@ static esp_err_t temperature_data_get_handler(httpd_req_t *req)
 }
 
 /* Handler for getting humidity data*/
-static esp_err_t humidity_data_get_handler(httpd_req_t *req)
+static esp_err_t humidity_data_GET_handler(httpd_req_t *req)
 {
     httpd_resp_set_type(req, "application/json");
     cJSON *root = cJSON_CreateObject();
@@ -184,7 +184,7 @@ esp_err_t start_rest_server(const char *base_path)
     httpd_uri_t temperature_data_get_uri = {
         .uri="/api/v1/temp/raw",
         .method=HTTP_GET,
-        .handler = temperature_data_get_handler,
+        .handler = temperature_data_GET_handler,
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &temperature_data_get_uri);
@@ -193,7 +193,7 @@ esp_err_t start_rest_server(const char *base_path)
     httpd_uri_t humidity_data_get_uri = {
         .uri="/api/v1/hum/raw",
         .method=HTTP_GET,
-        .handler = humidity_data_get_handler,
+        .handler = humidity_data_GET_handler,
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &humidity_data_get_uri);
@@ -202,7 +202,7 @@ esp_err_t start_rest_server(const char *base_path)
     httpd_uri_t common_get_uri = {
         .uri = "/",
         .method = HTTP_GET,
-        .handler = rest_common_get_handler,
+        .handler = rest_GET_resource_handler,
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &common_get_uri);

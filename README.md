@@ -29,7 +29,7 @@ Open project configuration menu.
 
 In `Example Connection Configuration` menu:
 
-* Choose the network interface in 'Connect using' option. Select the Wi-Fi interface and your Wi-Fi SSID and Wi-Fi password of the network your ESP32 will connect to
+* Choose the network interface in 'Connect using' option. Select the Wi-Fi interface and set your Wi-Fi SSID and Wi-Fi password of the network your ESP32 will connect to.
 
 ### Build and Flash
 
@@ -38,3 +38,7 @@ Build the project and then flash it to the ESP32 board using a serial connection
 ### Render webpage in browser
 
 In your browser, enter the URL `http://esp-home.local`. You can also enter the IP address that the ESP32 obtained.
+
+### Eaxmple output
+
+[!alt text](https://i.ibb.co/2Mz9k0j/Screenshot-from-2021-12-28-22-43-47.png)
