@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>ESP32 SHT31 Server</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+</head>
+
+<body>
+    <h1> ESP32 SHT31 Server</h1>
+    <div class="sensorData" id="temp">
+        <i class="fas fa-thermometer-three-quarters fa-2x" style="color:#ff7b25;"></i>
+        <span class="labels"> Temperature:</span>
+        <span id="temperature">%TEMPERATURE%</span>
+        <sup class = "units">°C</sup> 
+    </div>
+
+    <div class="chartBox">
+        <canvas id="chart_temp" width="400" height="300"></canvas>
+    </div>
+    
+
+    <div class="sensorData" id="hum">
+        <i class="fas fa-tint fa-2x" style="color:#80ced6;"></i>
+        <span class="labels"> Humidity:</span>
+        <span id="humidity">%HUMIDITY%</span>
+        <sup class = "units">%</sup> 
+        
+    </div>
+    <div class="chartBox">
+        <canvas id="chart_hum" width="400" height="300"></canvas>
+    </div>
+
+        <script>
+            const uri_temp = "http://esp-home.local/api/v1/temp/raw"
+            const uri_hum = "http://esp-home.local/api/v1/hum/raw"
+
+            const xlabels_temp=[];
+            const data_temp = {
+                labels: xlabels_temp,
+                datasets: [{
+                    label: "Temperature reading",
+                    backgroundColor: 'rgb(255,123,37)',
+                    borderColor: 'rgb(255,123,37)',
+                    data: [],
+                }]
+            }
+
+            const config_temp = {
+                type: 'line',
+                data: data_temp,
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        callbacks: {
+                        label: function(tooltipItem) {
+                                return tooltipItem.yLabel;
+                        }
+                        }
+                    }
+                }
+            };
+
+            const tempChart = new Chart(
+                document.getElementById('chart_temp'),
+                config_temp
+            );
+
+            const xlabels_hum =[];
+            const data_hum = {
+                labels: xlabels_hum,
+                datasets: [{
+                    label: "Humidity reading",
+                    backgroundColor: 'rgb(128,206,214)',
+                    borderColor: 'rgb(128,206,214)',
+                    data: [],
+                }]
+            }
+            const config_hum = {
+                type: 'line',
+                data: data_hum,
+                options: {}
+                
+            }
+
+            const humChart = new Chart(
+                document.getElementById('chart_hum'),
+                config_hum
+            )
+
+            function addData(chart, label, data) {
+                            chart.data.labels.push(label);
+                            chart.data.datasets.forEach((dataset) => {
+                                dataset.data.push(data);
+                            });
+                            chart.update();
+            }
+
+            async function getTemperatureAndHumidity() {
+                fetch(uri_temp)
+                    .then((response)=> response.text())
+                    .then((dataStr)=> {
+                        let data = JSON.parse(dataStr);
+                        let temp = data.raw;
+                        document.getElementById("temperature").innerHTML = temp.toFixed(2);
+
+                        let today = new Date();
+                        let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        addData(tempChart, time, temp);
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                    });
+                fetch(uri_hum)
+                    .then((response)=> response.text())
+                    .then((dataStr)=> {
+                        let data = JSON.parse(dataStr);
+                        let hum = data.raw;
+                        document.getElementById("humidity").innerHTML = hum.toFixed(2);
+                        
+                        let today = new Date();
+                        let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        addData(humChart, time, hum);
+
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                    });
+            }
+            
+            getTemperatureAndHumidity();
+            var interval = setInterval(getTemperatureAndHumidity, 5000);
+
+            
+
+
+        </script>
+        <style>
+            html {
+                font-family: 'Roboto', sans-serif;
+                display: inline-block;
+                margin: 0px auto;
+                text-align: center;
+            }
+            h1 {
+                font-size: 3.0rem;
+            }
+            .labels, #humidity, #temperature{
+                font-size: 1.5rem;
+                vertical-align:middle;
+                padding-bottom: 15px;
+            }
+            .units{
+                font-size: 1.2rem;
+            }
+
+            .chartBox{
+                width: 400px;
+                height: 300px;
+                position: relative;
+                margin: auto;
+            }
+
+            div {
+                display: block;
+                padding-bottom: 20px;
+            }
+
+            /* #chart_temp, #chart_hum{
+                height: 300px;
+            } */
+           
+        </style>
+</body>
+
+</html>
