@@ -27,7 +27,7 @@ To run this project, you need and ESP32 dev board or ESP32 core board and a SHT3
 
 Open project configuration menu.
 
-In 'Example Connection Configuration' menu:
+In `Example Connection Configuration` menu:
 
 * Choose the network interface in 'Connect using' option. Select the Wi-Fi interface and your Wi-Fi SSID and Wi-Fi password of the network your ESP32 will connect to
 
@@ -37,4 +37,4 @@ Build the project and then flash it to the ESP32 board using a serial connection
 
 ### Render webpage in browser
 
-In your browser, enter the URL 'http://esp-home.local'. You can also enter the IP address that the ESP32 obtained.
+In your browser, enter the URL `http://esp-home.local`. You can also enter the IP address that the ESP32 obtained.
