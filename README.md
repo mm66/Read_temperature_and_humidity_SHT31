@@ -41,4 +41,4 @@ In your browser, enter the URL `http://esp-home.local`. You can also enter the I
 
 ### Eaxmple output
 
-[!alt text](https://i.ibb.co/2Mz9k0j/Screenshot-from-2021-12-28-22-43-47.png)
+![alt text](https://i.ibb.co/2Mz9k0j/Screenshot-from-2021-12-28-22-43-47.png)
