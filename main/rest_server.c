@@ -7,7 +7,7 @@
 #include "cJSON.h"
 #include "sht31.h"
 
-static const char *REST_TAG = "esp-rest";
+static const char *REST_TAG = "ESP-REST";
 
 #define REST_CHECK(a, str, goto_tag, ...) \                                          
     do \

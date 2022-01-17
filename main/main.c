@@ -24,7 +24,7 @@ static char *TAG = "MAIN";
 
 esp_err_t start_rest_server(const char *base_path);
 
-static void initialise_mdsn(void)
+static void initialise_mdns(void)
 {
 	mdns_init();
 	mdns_hostname_set(CONFIG_MDNS_HOSTNAME);
@@ -89,11 +89,13 @@ void app_main() {
 	ESP_ERROR_CHECK(nvs_flash_init());
 	ESP_ERROR_CHECK(esp_netif_init());
 	ESP_ERROR_CHECK(esp_event_loop_create_default());
-	initialise_mdsn();
+	initialise_mdns();
 	netbiosns_init();
 	netbiosns_set_name(CONFIG_MDNS_HOSTNAME);
 
+	//TODO: Implement full WiFi connection handling instead of example
 	ESP_ERROR_CHECK(example_connect());
+	
 	ESP_ERROR_CHECK(init_fs());
 	ESP_ERROR_CHECK(start_rest_server(WEB_MOUNT_POINT));
 

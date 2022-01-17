@@ -3,7 +3,7 @@
 #include <driver/i2c.h>
 #include <esp_log.h>
 
-static char tag[] = "neosarchizo";
+static char tag[] = "SHT31_DRIVER";
 
 esp_err_t sht31_reset()
 {
